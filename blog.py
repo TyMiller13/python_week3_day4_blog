@@ -20,6 +20,25 @@ class Blog:
             self.users.add(new_user)
             print(f"{new_user} has been created.")
 
+    # Method to log user in
+    def log_user_in(self):
+        #get user credentials
+        username = input("What is your username? ")
+        password = input("What is your password? ")
+        #loop through each user in the blog
+        for user in self.users:
+            if user.username == username and user.check_password(password):
+                #if user has correct credentials, set the blog's current user to that user instance
+                self.current_user = user
+                print(f"{user} has been logged in")
+                break
+        # If no users in out blog user set have that username/password, alert invalid credentials
+        else:
+            print("Username and/or Password is incorrect.")
+
+
+
+
 class User:
     id_counter = 1 # class attribute keeping track of User IDs
     def __init__(self, username, password):
@@ -51,19 +70,32 @@ def run_blog():
         # if there is no current user logged in
         if my_blog.current_user is None:
             #Print the menu option
-            print("1. Sign Up \n5. Quit")
+            print("1. Sign Up \n2. Log In\n5. Quit")
             #Ask the user which option they would like to do
             to_do = input('Which option would you like to do? ')
             #Keep asking if user chooses an invalid option
-            while to_do not in {'1','5'}:
-                to_do = input('Invalid option. Please choose 1 or 5. ')
+            while to_do not in {'1','2','5'}:
+                to_do = input('Invalid option. Please choose 1, 2, or 5. ')
             if to_do == '5':
                 print('Thanks for checking out the blog!')
                 break
             elif to_do == '1':
                 #method to create new user
                 my_blog.create_new_user()
-            
+            elif to_do == '2':
+                # method to log user in
+                my_blog.log_user_in()
+        # If the current user is not None aka a user is logged in
+        else:
+            # Print menu options for logged in user
+            print("Quit")
+            to_do = input("Which option would you like to choose? ")
+            if to_do == 'quit':
+                break
+
+
+
+
 
 # Execute the run_blog function to run the blog
 run_blog()
